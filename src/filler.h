@@ -6,14 +6,21 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:01:19 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/22 19:23:26 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/23 17:36:43 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILLER_H
 # define FILLER_H
 # include <libft.h>
-# include "parser.h"
+# define STDIN_FILENO		0
+# define KEYWORD_1_1		"$$$ exec p1"
+# define KEYWORD_1_2		"$$$ exec p2"
+# define NB_PIECE_OFFSET	100
+# define OFFSET_JUMP		10
+# define PATH_DEBUG			"pierre.log"
+#include <stdio.h>
+extern FILE *fd;
 
 typedef struct 	s_env
 {
