@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 13:32:55 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/23 17:20:33 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/23 20:03:34 by pierre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ int		main(void)
 			}
 			else if (res == 3)
 			{
-				ft_putstr("12 13\n");
-				fprintf(fd, "12 14\n");
-				//if (analyse(&e))
-				//	print_res(&e)
+				if (analyse(&e))
+					print(&e)
 			}
 			//ne pas oublier de free le plateau
 			fclose(fd);

@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:01:19 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/23 17:36:43 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/24 14:23:40 by pierre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define NB_PIECE_OFFSET	100
 # define OFFSET_JUMP		10
 # define PATH_DEBUG			"pierre.log"
+# define DEBUG(x)			fprintf(fd, x);
 #include <stdio.h>
 extern FILE *fd;
 
@@ -35,8 +36,13 @@ typedef struct 	s_env
 	t_uint8		piece_offset_size;
 	t_uint8		analyse_x;
 	t_uint8		analyse_y;
+	t_uint8		analyse_near_x;
+	t_uint8		analyse_near_y;
+	t_uint8		analyse_x_start;
+	t_uint8		analyse_y_start;
 }				t_env;
 
 void	init(t_env *e);
+void	print(t_env *e);
 
 #endif
