@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:08:49 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/23 18:12:52 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/25 15:49:54 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,15 @@ int		parser(t_env *e, t_string l)
 int		parser_player(t_env *e, t_string l)
 {
 	if (ft_strncmp(l, KEYWORD_1_1, ft_strlen(KEYWORD_1_1)) == 0)
+	{
 		e->player_letter = 'O';
+		e->ads_letter = 'X';
+	}
 	else if (ft_strncmp(l, KEYWORD_1_2, ft_strlen(KEYWORD_1_2)) == 0)
+	{
 		e->player_letter = 'X';
+		e->ads_letter = 'O';
+	}
 	else
 		return (0);
 	return (1);
@@ -85,9 +91,12 @@ int		parser_piece(t_env *e, t_string l)
 		if ((e->piece_x == 0 || e->piece_y == 0))
 			return (0);
 		ft_bzero(e->piece_offset, NB_PIECE_OFFSET);
+		e->piece_pixel_bool = FALSE;
 	}
 	else if (ft_strchr(l, '*') != NULL)
 		j = parser_piece_shape(e, l, j);
+	else
+		e->piece_offset[j] += OFFSET_JUMP;
 	if (i == e->piece_y)
 	{
 		fprintf(fd, "x %d y %d\n", e->piece_x, e->piece_y);
@@ -95,7 +104,7 @@ int		parser_piece(t_env *e, t_string l)
 		i = 0;
 		j = 0;
 		int t = 0;
-		while (t < e->piece_offset_size)
+		while (t <= e->piece_offset_size)
 			fprintf(fd, "%d ", e->piece_offset[t++]);
 		fprintf(fd, "\n");
 		return (3);
@@ -113,12 +122,13 @@ int		parser_piece_shape(t_env *e, t_string l, t_uint8 j)
 	ptr = l;
 	while ((star = ft_strchr(ptr, '*')) && j < NB_PIECE_OFFSET)
 	{
-		e->piece_offset[j] = e->piece_offset[j] + (star - ptr);
+		e->piece_offset[j] += (star - ptr);
 		fprintf(fd, "j %d e->piece_offset %d\n", j , e->piece_offset[j]);
 		ptr = star + 1;
 		++j;
+		e->piece_offset[j] = 1;
 	}
-	e->piece_offset[j] = ft_strchr(ptr, '\0') - ptr + OFFSET_JUMP;
+	e->piece_offset[j] = OFFSET_JUMP;
 	fprintf(fd, "j %d e->piece_offset %d\n", j , e->piece_offset[j]);
 
 	return (j);

@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:04:34 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/23 20:17:19 by pierre           ###   ########.fr       */
+/*   Updated: 2018/04/24 17:45:45 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,18 @@ void	init(t_env *e)
 	e->piece_offset_size = 0;
 	e->analyse_x = 0;
 	e->analyse_y = 0;
+	e->piece_pixel_bool = FALSE;
+	e->analyse_pos = 0;
 }
 
 void	print(t_env *e)
 {
-	DEBUG("%d %d\n", e->analyse_y, e->analyse_x);
-	ft_putnbr(e->analyse_y);
+	fprintf(fd, "pos %d\n", e->analyse_pos);
+	fprintf(fd, "%d %d\n", e->analyse_pos / e->plateau_x,
+			e->analyse_pos % e->plateau_x);
+	ft_putnbr(e->analyse_pos / e->plateau_x);
 	ft_putchar(' ');
-	ft_putnbr(e->analyse_x);
+	ft_putnbr(e->analyse_pos % e->plateau_x);
 	ft_putchar('\n');
 }
 
@@ -44,7 +48,7 @@ void	get_start_position(t_env *e)
 
 	if ((ptr = ft_strchr(e->plateau_data, e->player_letter)))
 	{
-		DEBUG("%d %d\n", e->analyse_y_start, e->analyse_x_start);
+		fprintf(fd, "%d %d\n", e->analyse_y_start, e->analyse_x_start);
 		pos = ptr - e->plateau_data;
 		e->analyse_y_start = pos / e->plateau_x;
 		e->analyse_x_start = pos % e->plateau_x;
