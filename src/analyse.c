@@ -6,7 +6,7 @@
 /*   By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 20:00:13 by pierre            #+#    #+#             */
-/*   Updated: 2018/04/28 22:10:48 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/28 22:38:02 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,26 @@ int			analyse(t_env *e)
 	int			j;
 	int			i_max;
 	static int	status = 0;
-	static int	sign = 0;
+	int			sign = 0;
 	t_uint32	distance_old;
 	t_uint32	board;
 
 	i = 0;
+	j = 0;
 	board = e->plateau_y * e->plateau_x;
-	j = (e->plateau_x * e->plateau_y - 1) / 2;
 	i_max = e->plateau_x * e->plateau_y;
 	e->analyse_pos = -1;
 	distance_old = 0xFFFFFF;
+	status++;
+	if (status == 3)
+		status = 0;
 	if (status == 1)
 	{
 		i = e->plateau_x * e->plateau_y - 1;
 		i_max = 0;
 	}
+	else if (status == 2)
+		i = (e->plateau_x * e->plateau_y - 1) / 2;
 	while (i != i_max)
 	{
 		if (analyse_check_position(e, i))
@@ -43,7 +48,10 @@ int			analyse(t_env *e)
 			if (board < 1600)
 				distance_old = analyse_follow_him(e, i, distance_old);
 			else
+			{
 				e->analyse_pos = i;
+				return (1);
+			}
 		}
 		if (status == 0)
 			i++;
@@ -51,17 +59,14 @@ int			analyse(t_env *e)
 			i--;
 		else
 		{
-			i++;
+			j++;
 			sign ^= 1;
 			if (sign == 0)
-				j -= i;
+				i -= j;
 			else
-				j += i;
+				i += j;
 		}
 	}
-	status++;
-	if (status == 3)
-		status = 0;
 	return ((e->analyse_pos == -1 ) ? 0 : 1);
 }
 
