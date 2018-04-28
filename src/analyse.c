@@ -6,7 +6,7 @@
 /*   By: pierre <pleroux@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/23 20:00:13 by pierre            #+#    #+#             */
-/*   Updated: 2018/04/25 21:56:55 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/28 22:10:48 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,66 +17,79 @@
 
 int			analyse(t_env *e)
 {
-	analyse_algo_brut(e);
+	int			i;
+	int			j;
+	int			i_max;
+	static int	status = 0;
+	static int	sign = 0;
+	t_uint32	distance_old;
+	t_uint32	board;
+
+	i = 0;
+	board = e->plateau_y * e->plateau_x;
+	j = (e->plateau_x * e->plateau_y - 1) / 2;
+	i_max = e->plateau_x * e->plateau_y;
+	e->analyse_pos = -1;
+	distance_old = 0xFFFFFF;
+	if (status == 1)
+	{
+		i = e->plateau_x * e->plateau_y - 1;
+		i_max = 0;
+	}
+	while (i != i_max)
+	{
+		if (analyse_check_position(e, i))
+		{
+			if (board < 1600)
+				distance_old = analyse_follow_him(e, i, distance_old);
+			else
+				e->analyse_pos = i;
+		}
+		if (status == 0)
+			i++;
+		else if (status == 1)
+			i--;
+		else
+		{
+			i++;
+			sign ^= 1;
+			if (sign == 0)
+				j -= i;
+			else
+				j += i;
+		}
+	}
+	status++;
+	if (status == 3)
+		status = 0;
 	return ((e->analyse_pos == -1 ) ? 0 : 1);
 }
 
-void		analyse_algo_brut(t_env *e)
+t_uint32	analyse_follow_him(t_env *e, t_uint32 i, t_uint32 dis_old)
 {
-	int				i;
-	int 			j;
-	static int		status = 0;
-	static t_uint8	sign = 0;
+	t_uint32	distance;
+	t_string	ptr;
 
-	if (status == 0)
+	ptr = e->plateau_data;
+	while ((ptr = ft_strchr(ptr, e->ads_letter)))
 	{
-		status = 1;
-		i = e->plateau_x * e->plateau_y - 1;
-		while(i >= 0)
+		distance = 0;
+		distance = ((ft_abs(i % e->plateau_x -
+					(e->plateau_x * e->plateau_y / 2) % e->plateau_x) +
+				ft_abs(i / e->plateau_y -
+					(e->plateau_x * e->plateau_y / 2) / e->plateau_y)) ==
+				(e->plateau_x * e->plateau_y / 2)) ? 0 : 1;
+		distance += (ft_abs(i % e->plateau_x - (ptr - e->plateau_data) %
+				e->plateau_x) + ft_abs(i / e->plateau_y -
+					(ptr - e->plateau_data) / e->plateau_y));
+		if (distance < dis_old)
 		{
-			if (analyse_check_position(e, i))
-			{
-				e->analyse_pos = i;
-				return;
-			}
-			i--;
+			e->analyse_pos = i;
+			dis_old = distance;
 		}
+		ptr++;
 	}
-	else if (status == 1)
-	{
-		status = 2;
-		i = 0;
-		while(i < e->plateau_x * e->plateau_y - 1)
-		{
-			if (analyse_check_position(e, i))
-			{
-				e->analyse_pos = i;
-				return;
-			}
-			i++;
-		}
-	}
-	else if (status == 2)
-	{
-		status = 0;
-		j = 0;
-		i = (e->plateau_x * e->plateau_y - 1) / 2;
-		while(j <= e->plateau_x * e->plateau_y)
-		{
-			sign ^= 1;
-			j++;
-			if (analyse_check_position(e, i))
-			{
-				e->analyse_pos = i;
-				return;
-			}
-			if (sign == 0)
-				i -= j;
-			else
-				i += j;
-		}
-	}
-	e->analyse_pos = -1;
+	return (dis_old);
 }
 
 t_bool		analyse_check_position(t_env *e, t_uint32 pos)

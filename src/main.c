@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 13:32:55 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/25 20:50:37 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/28 14:22:01 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int		main(void)
 				print(&e);
 			else
 			{
-				print(&e);
+				ft_putstr("0 0\n");
 				return (0);
 			}
 		}
