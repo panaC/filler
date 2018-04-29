@@ -13,3 +13,4 @@ st.sh
 pleroux.filler
 filler.pdf
 .*~
+src/*.o
