@@ -1,3 +1,11 @@
 src/.*
 a.out
 *.trace
+*.log
+Show_Filler/*
+Show_Filler
+filler_vm
+players/*
+players
+maps/*
+maps
