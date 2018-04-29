@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:01:19 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/29 01:39:12 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/29 04:34:03 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define STDIN_FILENO		0
 # define KEYWORD_1_1		"$$$ exec p1"
 # define KEYWORD_1_2		"$$$ exec p2"
+# define PRT_DEFAULT		"0 0\n"
 # define NB_PIECE_OFFSET	100
 # define OFFSET_JUMP		100
 # define PATH_DEBUG			"/dev/null"

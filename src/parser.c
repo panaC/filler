@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:08:49 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/29 01:58:49 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/29 04:51:16 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		parser_plateau(t_env *e, t_string l)
 	{
 		l = ft_strchr(l, ' ');
 		e->plateau_y = ft_atoi(l);
-		e->plateau_x = ft_atoi(ft_strchr(l + 1, ' '));
+		e->plateau_x = ft_atoi((l == NULL ? NULL : ft_strchr(l + 1, ' ')));
 		if ((e->plateau_x != 0 && e->plateau_y != 0) && !(e->plateau_data =
 					ft_strnew(e->plateau_x * e->plateau_y + 1)))
 			return (0);
@@ -80,7 +80,7 @@ int		parser_piece(t_env *e, t_string l)
 	{
 		l = ft_strchr(l, ' ');
 		e->piece_y = ft_atoi(l);
-		e->piece_x = ft_atoi(ft_strchr(l + 1, ' '));
+		e->piece_x = ft_atoi((l == NULL ? NULL : ft_strchr(l + 1, ' ')));
 		if ((e->piece_x == 0 || e->piece_y == 0))
 			return (0);
 		ft_bzero(e->piece_offset, NB_PIECE_OFFSET);

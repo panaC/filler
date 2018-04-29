@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 13:32:55 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/29 03:49:51 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/29 04:54:48 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,17 @@ int		main(void)
 		if (get_next_line(STDIN_FILENO, &line))
 		{
 			res = parser(&e, line);
-			free(line);
+			ft_memdel((void**)&line);
 			if (res == 0)
 				break ;
+			else if (res == 3 && analyse(&e))
+				print(&e);
 			else if (res == 3)
-			{
-				if (analyse(&e))
-					print(&e);
-				else
-					break ;
-			}
+				break ;
 		}
 	}
-	ft_putstr("0 0\n");
+	ft_memdel((void**)&line);
+	ft_putstr(PRT_DEFAULT);
 	ft_memdel((void**)&(e.plateau_data));
 	return (0);
 }
