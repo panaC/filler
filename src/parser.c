@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 14:08:49 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/25 15:49:54 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/29 01:58:49 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int		parser(t_env *e, t_string l)
 {
 	static int		i = 0;
 
-	fprintf(fd, "parser i %d\n", i);
 	if (i == 3)
 		i = 4;
 	if (i == 0)
@@ -53,7 +52,6 @@ int		parser_plateau(t_env *e, t_string l)
 {
 	static int		i = 0;
 
-	fprintf(fd, "parser_plateau i %d\n", i);
 	if (i == 0)
 	{
 		l = ft_strchr(l, ' ');
@@ -69,10 +67,7 @@ int		parser_plateau(t_env *e, t_string l)
 	else if (i > 1)
 		return (0);
 	if (i == e->plateau_y + 1 && (i = 1))
-	{
-		fprintf(fd, "x %d y %d\n%s\n", e->plateau_x, e->plateau_y, e->plateau_data);
 		return (2);
-	}
 	++i;
 	return (1);
 }
@@ -80,9 +75,7 @@ int		parser_plateau(t_env *e, t_string l)
 int		parser_piece(t_env *e, t_string l)
 {
 	static int			i = 0;
-	static t_uint8		j = 0;
 
-	fprintf(fd,"parser_piece i %d\n", i);
 	if (i == 0)
 	{
 		l = ft_strchr(l, ' ');
@@ -92,21 +85,15 @@ int		parser_piece(t_env *e, t_string l)
 			return (0);
 		ft_bzero(e->piece_offset, NB_PIECE_OFFSET);
 		e->piece_pixel_bool = FALSE;
+		e->piece_offset_size = 0;
 	}
 	else if (ft_strchr(l, '*') != NULL)
-		j = parser_piece_shape(e, l, j);
+		e->piece_offset_size = parser_piece_shape(e, l, e->piece_offset_size);
 	else
-		e->piece_offset[j] += OFFSET_JUMP;
+		e->piece_offset[e->piece_offset_size] += OFFSET_JUMP;
 	if (i == e->piece_y)
 	{
-		fprintf(fd, "x %d y %d\n", e->piece_x, e->piece_y);
-		e->piece_offset_size = j;
 		i = 0;
-		j = 0;
-		int t = 0;
-		while (t <= e->piece_offset_size)
-			fprintf(fd, "%d ", e->piece_offset[t++]);
-		fprintf(fd, "\n");
 		return (3);
 	}
 	++i;
@@ -118,18 +105,14 @@ int		parser_piece_shape(t_env *e, t_string l, t_uint8 j)
 	t_string		ptr;
 	t_string		star;
 
-	fprintf(fd,"parser_piece_shape j %d\n", j);
 	ptr = l;
 	while ((star = ft_strchr(ptr, '*')) && j < NB_PIECE_OFFSET)
 	{
 		e->piece_offset[j] += (star - ptr);
-		fprintf(fd, "j %d e->piece_offset %d\n", j , e->piece_offset[j]);
 		ptr = star + 1;
 		++j;
 		e->piece_offset[j] = 1;
 	}
 	e->piece_offset[j] = OFFSET_JUMP;
-	fprintf(fd, "j %d e->piece_offset %d\n", j , e->piece_offset[j]);
-
 	return (j);
 }

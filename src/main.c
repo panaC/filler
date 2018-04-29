@@ -6,7 +6,7 @@
 /*   By: pleroux <pleroux@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/18 13:32:55 by pleroux           #+#    #+#             */
-/*   Updated: 2018/04/28 14:22:01 by pleroux          ###   ########.fr       */
+/*   Updated: 2018/04/29 02:09:38 by pleroux          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 #include "filler.h"
 #include "parser.h"
 #include "analyse.h"
-#include <stdio.h>
-
-FILE *fd;
 
 int		main(void)
 {
@@ -30,30 +27,20 @@ int		main(void)
 	{
 		if (get_next_line(STDIN_FILENO, &line))
 		{
-		fd = fopen(PATH_DEBUG, "a");
-		fprintf(fd, "#%s#\n", line);
-		res = parser(&e, line);
-		fprintf(fd, "res %d\n", res);
-		//free(line);
-		if (res == 0)
-		{
-			//erreur parsing & quit
-			fprintf(fd, "QUIT\n");
-			return (0);
-		}
-		else if (res == 3)
-		{
-			fflush(fd);
-			if (analyse(&e))
-				print(&e);
-			else
+			res = parser(&e, line);
+			free(line);
+			if (res == 0)
+				break ;
+			else if (res == 3)
 			{
-				ft_putstr("0 0\n");
-				return (0);
+				if (analyse(&e))
+					print(&e);
+				else
+					break ;
 			}
 		}
-		//ne pas oublier de free le plateau
-		fclose(fd);
-		}
 	}
+	ft_putstr("0 0\n");
+	ft_memdel((void**)&(e.plateau_data));
+	return (0);
 }
