@@ -51,6 +51,10 @@ Piece 4 7:
 ..***..
 ```
 
+## time flow
+
+- about 1 weeks
+
 ## ressources
 
 - [PDF in French](https://cdn.intra.42.fr/pdf/pdf/634/filler.fr.pdf)
